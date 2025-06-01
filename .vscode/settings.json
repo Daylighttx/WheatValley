@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "WheatValey.sln"
+    "dotnet.defaultSolution": "WheatValey.sln",
+    "dotnet.preferCSharpExtension": true
 }
