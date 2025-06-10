@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+
+namespace MFarm.Inventory
 {
-    // Start is called before the first frame update
-    void Start()
+    public class InventoryManager : Singleton<InventoryManager>
     {
-        
-    }
+        public ItemDataList_SO itemDataList_SO;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        /// <summary>
+        /// 通过ID返回物品信息
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public ItemDetails GetItemDetails(int ID)
+        {
+            return itemDataList_SO.itemDetailsList.Find(i => i.itemID == ID);
+        }
     }
 }
+
