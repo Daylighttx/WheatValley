@@ -7,7 +7,7 @@ public class Item : MonoBehaviour
     public int itemID;
 
     private SpriteRenderer spriteRenderer;
-    private ItemDetails itemDetails;
+    public ItemDetails itemDetails;
     private BoxCollider2D boxCollider2D;
 
     private void Awake()
