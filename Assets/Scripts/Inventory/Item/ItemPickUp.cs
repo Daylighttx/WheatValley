@@ -13,7 +13,7 @@ namespace MFarm.Inventory
             {
                 if (item.itemDetails.canPickedup)
                 {
-                    //TODO:拾取物品到背包
+                    //拾取物品到背包
                     InventoryManager.Instance.AddItem(item, true);
                 }
             }

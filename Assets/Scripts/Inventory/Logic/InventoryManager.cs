@@ -1,5 +1,3 @@
-
-
 using UnityEngine;
 
 namespace MFarm.Inventory
@@ -28,18 +26,67 @@ namespace MFarm.Inventory
         public void AddItem(Item item, bool toDestroy)
         {
             //Debug.Log(GetItemDetails(item.itemID).itemID + "Name: " + GetItemDetails(item.itemID).itemName);
-            //TODO: 背包是否有空位
-            //TODO: 背包是否已存在该物品
-            InventoryItem newItem = new InventoryItem
-            {
-                ItemID = item.itemID,
-                itemAmount = 1
-            };
-            playerBag.itemList[0] = newItem;
-            
+            //背包是否已存在该物品
+            var index = GetItemIndexInBag(item.itemID);
+            AddItemAtIndex(item.itemID, index, 1);
             if (toDestroy)
             {
                 Destroy(item.gameObject);
+            }
+        }
+
+        /// <summary>
+        /// 检查背包是否有空位
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckBagCapacity()
+        {
+            for (int i = 0; i < playerBag.itemList.Count; i++)
+            {
+                if (playerBag.itemList[i].ItemID == 0)
+                { return true; }
+            }
+            return false;
+        }
+        /// <summary>
+        /// 通过物品ID找到背包已有物品位置
+        /// </summary>
+        /// <param name="ID">物品ID</param>
+        /// <returns>找不到返回-1，找到返回序号</returns>
+        private int GetItemIndexInBag(int ID)
+        {
+            for (int i = 0; i < playerBag.itemList.Count; i++)
+            {
+                if (playerBag.itemList[i].ItemID == ID)
+                { return i; }
+            }
+            return -1;
+        }
+        /// <summary>
+        /// 在指定背包序号位置添加物品
+        /// </summary>
+        /// <param name="ID">物品ID</param>
+        /// <param name="index">序号</param>
+        /// <param name="amount">数量</param>
+        private void AddItemAtIndex(int ID, int index, int amount)
+        {
+            if (index == -1 && CheckBagCapacity()) //背包没有这个物品
+            {
+                var item = new InventoryItem { ItemID = ID, itemAmount = amount };
+                for (int i = 0; i < playerBag.itemList.Count; i++)
+                {
+                    if (playerBag.itemList[i].ItemID == 0)
+                    {
+                        playerBag.itemList[i] = item;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                int currentAmount = playerBag.itemList[index].itemAmount + amount;
+                var item = new InventoryItem { ItemID = ID, itemAmount = currentAmount };
+                playerBag.itemList[index] = item;
             }
         }
     }
