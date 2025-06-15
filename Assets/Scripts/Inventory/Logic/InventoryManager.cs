@@ -10,6 +10,15 @@ namespace MFarm.Inventory
         public InventoryBag_SO playerBag;
 
         /// <summary>
+        /// Start is called on the frame when a script is enabled just before
+        /// any of the Update methods is called the first time.
+        /// </summary>
+        private void Start()
+        {
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
+        }
+
+        /// <summary>
         /// 通过ID返回物品信息
         /// </summary>
         /// <param name="ID"></param>
@@ -33,6 +42,9 @@ namespace MFarm.Inventory
             {
                 Destroy(item.gameObject);
             }
+
+            //更新UI
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
         }
 
         /// <summary>
@@ -88,6 +100,30 @@ namespace MFarm.Inventory
                 var item = new InventoryItem { ItemID = ID, itemAmount = currentAmount };
                 playerBag.itemList[index] = item;
             }
+        }
+
+        /// <summary>
+        /// Player背包范围内交换物品
+        /// </summary>
+        /// <param name="fromIndex">起始序号</param>
+        /// <param name="targetIndex">目标序号</param>
+        public void SwapItem(int fromIndex, int targetIndex)
+        {
+            InventoryItem currentItem = playerBag.itemList[fromIndex];
+            InventoryItem targetItem = playerBag.itemList[targetIndex];
+
+            if (targetItem.ItemID != 0)
+            {
+                playerBag.itemList[fromIndex] = targetItem;
+                playerBag.itemList[targetIndex] = currentItem;
+            }
+            else
+            {
+                playerBag.itemList[fromIndex] = new InventoryItem();
+                playerBag.itemList[targetIndex] = currentItem;
+            }
+
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
         }
     }
 }
